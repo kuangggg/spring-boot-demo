@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: eureka-server
+#  security:
+#    user:
+#      name: u123
+#      password: 123456
+
+server:
+  port: 8761
+# curl -i --basic -u u123:123456 http://127.0.0.1:7001/eureka/apps
+# http://127.0.0.1:7001/eureka/apps
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      default-zone: http://${eureka.instance.hostname}:${server.port}/eureka
+    # 新服务上线获取频率
+    registry-fetch-interval-seconds: 5
+
+  server:
+    # 服务端剔除任务间隔
+    use-read-only-response-cache: false
+    eviction-interval-timer-in-ms: 5000
+    # 测试环境关闭自我保护
+    enable-self-preservation: false
+
+

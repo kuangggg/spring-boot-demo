@@ -1,0 +1,21 @@
+server:
+  port: 7002
+spring:
+  application:
+    name: consumer-server
+  sleuth:
+    baggage-keys:
+      - trace_id
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 1000
+        readTimeout: 3000
+
+  hystrix:
+    enabled: true
+
+
+
+
