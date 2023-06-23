@@ -1,0 +1,52 @@
+server:
+  port:
+    8080
+
+spring:
+  application:
+    name: spring-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: jd_route
+          uri: https://www.jd.com/
+          predicates:
+            - Path=/jd
+
+        - id: hystrix_route
+          uri: http://127.0.0.1:7001/test/hystrix
+          predicates:
+            - Path=/test/hystrix
+          filters:
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 5000
+
+
+management:
+  server:
+    port: 9999
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /manage
+
+# http://127.0.0.1:9999/manage/gateway/routes
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: debug
+    org.springframework.web.reactive: debug
+    reactor.ipc.netty: debug
